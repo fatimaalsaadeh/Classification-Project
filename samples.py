@@ -1,6 +1,7 @@
 # samples.py
 # ----------
-
+import random
+import numpy
 import util
 
 ## Constants
@@ -84,7 +85,7 @@ class Datum:
     
 # Data processing, cleanup and display functions
     
-def loadDataFile(filename, n,width,height):
+def loadDataFile(filename, n,width,height, percent):
   """
   Reads n data images from a file and returns a list of Datum objects.
   
@@ -104,7 +105,12 @@ def loadDataFile(filename, n,width,height):
       print ("Truncating at %d examples (maximum)" % i)
       break
     items.append(Datum(data,DATUM_WIDTH,DATUM_HEIGHT))
-  return items
+  if percent != 1:
+    items2 = random.sample(items, int(numpy.math.ceil(percent * len(items))))
+    indices = numpy.where(numpy.isin(items,items2))[0]
+    return items2, indices
+  indices = numpy.where(numpy.isin(items,items))[0]
+  return items, indices
 
 import os
 def readlines(filename):

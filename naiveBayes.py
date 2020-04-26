@@ -34,7 +34,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         """
         self.k = k
 
-    def train(self, trainingData, trainingLabels, validationData, validationLabels):
+    def train(self, trainingData, trainingLabels, validationData, validationLabels, indices):
         """
         Outside shell to call your method. Do not modify this method.
         """
@@ -48,9 +48,9 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         else:
             kgrid = [self.k]
 
-        self.trainAndTune(trainingData, trainingLabels, validationData, validationLabels, kgrid)
+        self.trainAndTune(trainingData, trainingLabels, validationData, validationLabels, kgrid, indices)
 
-    def trainAndTune(self, trainingData, trainingLabels, validationData, validationLabels, kgrid):
+    def trainAndTune(self, trainingData, trainingLabels, validationData, validationLabels, kgrid, indices):
         """
         Trains the classifier by collecting counts over the training data, and
         stores the Laplace smoothed estimates so that they can be used to classify.
@@ -84,11 +84,11 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         index = 0
         for image in trainingData:
             for feature, color in image.items():
-                    count_features_labels[(feature, trainingLabels[index])] += 1
+                    count_features_labels[(feature, trainingLabels[indices[index]])] += 1
                     if color == 1:
-                        black_feature_label[(feature, trainingLabels[index])] += 1
+                        black_feature_label[(feature, trainingLabels[indices[index]])] += 1
                     else:
-                        white_feature_label[(feature, trainingLabels[index])] += 1
+                        white_feature_label[(feature, trainingLabels[indices[index]])] += 1
             index += 1
 
         # smoothing

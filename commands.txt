@@ -12,3 +12,9 @@ python dataClassifier.py -c mlp
 python dataClassifier.py -c svm
 
 python dataClassifier.py -c naiveBayes -t 300  -s 100 -d faces
+
+
+digits training total are 5000
+for faces training total 451
+faces test 150
+digits test 1000

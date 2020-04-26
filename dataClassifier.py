@@ -289,18 +289,18 @@ def runClassifier(args, options):
   numTest = options.test
 
   if(options.data=="faces"):
-    rawTrainingData = samples.loadDataFile("data/facedata/facedatatrain", numTraining,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
+    rawTrainingData, rawTrainingIndices = samples.loadDataFile("data/facedata/facedatatrain", numTraining,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT, .9)
     trainingLabels = samples.loadLabelsFile("data/facedata/facedatatrainlabels", numTraining)
-    rawValidationData = samples.loadDataFile("data/facedata/facedatatrain", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
+    rawValidationData, rawValidatioIndices = samples.loadDataFile("data/facedata/facedatatrain", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT, 1)
     validationLabels = samples.loadLabelsFile("data/facedata/facedatatrainlabels", numTest)
-    rawTestData = samples.loadDataFile("data/facedata/facedatatest", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
+    rawTestData, rawTestDataIndices = samples.loadDataFile("data/facedata/facedatatest", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT, 1)
     testLabels = samples.loadLabelsFile("data/facedata/facedatatestlabels", numTest)
   else:
-    rawTrainingData = samples.loadDataFile("data/digitdata/trainingimages", numTraining,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
+    rawTrainingData, rawTrainingIndices = samples.loadDataFile("data/digitdata/trainingimages", numTraining,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT, .1)
     trainingLabels = samples.loadLabelsFile("data/digitdata/traininglabels", numTraining)
-    rawValidationData = samples.loadDataFile("data/digitdata/validationimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
+    rawValidationData, rawValidatioIndices = samples.loadDataFile("data/digitdata/validationimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT, 1)
     validationLabels = samples.loadLabelsFile("data/digitdata/validationlabels", numTest)
-    rawTestData = samples.loadDataFile("data/digitdata/testimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
+    rawTestData, rawTestDataIndices = samples.loadDataFile("data/digitdata/testimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT, 1)
     testLabels = samples.loadLabelsFile("data/digitdata/testlabels", numTest)
 
 
@@ -312,7 +312,7 @@ def runClassifier(args, options):
 
   # Conduct training and testing
   print ("Training...")
-  classifier.train(trainingData, trainingLabels, validationData, validationLabels)
+  classifier.train(trainingData, trainingLabels, validationData, validationLabels, rawTrainingIndices)
   print ("Validating...")
   guesses = classifier.classify(validationData)
   correct = [guesses[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
