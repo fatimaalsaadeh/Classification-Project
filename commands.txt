@@ -12,3 +12,11 @@ python dataClassifier.py -c mlp
 python dataClassifier.py -c svm
 
 python dataClassifier.py -c naiveBayes -t 300  -s 100 -d faces
+
+autotone : python dataClassifier.py -c naiveBayes -t 5000  -s 1000 -d digits -a
+
+digits test 1000
+digits training  5000
+faces training  451
+faces test 150
+

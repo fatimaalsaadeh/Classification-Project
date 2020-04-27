@@ -6,3 +6,4 @@ memory_profile.log
 memory_profiler_basic_mean.log
 __pycache__/
 *.xml
+*.pyc
