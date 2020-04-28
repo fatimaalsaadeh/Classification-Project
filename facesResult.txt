@@ -1,0 +1,40 @@
+Training Using 10% of The Data
+Time : 0.66966676712
+Testing Using 10% of The Data
+109 correct out of 150 (72.7%).
+Training Using 20% of The Data
+Time : 1.28845596313
+Testing Using 20% of The Data
+113 correct out of 150 (75.3%).
+Training Using 30% of The Data
+Time : 1.96496582031
+Testing Using 30% of The Data
+133 correct out of 150 (88.7%).
+Training Using 40% of The Data
+Time : 2.67027306557
+Testing Using 40% of The Data
+125 correct out of 150 (83.3%).
+Training Using 50% of The Data
+Time : 3.73136496544
+Testing Using 50% of The Data
+130 correct out of 150 (86.7%).
+Training Using 60% of The Data
+Time : 4.40721011162
+Testing Using 60% of The Data
+131 correct out of 150 (87.3%).
+Training Using 70% of The Data
+Time : 5.06311202049
+Testing Using 70% of The Data
+134 correct out of 150 (89.3%).
+Training Using 80% of The Data
+Time : 5.4380300045
+Testing Using 80% of The Data
+133 correct out of 150 (88.7%).
+Training Using 90% of The Data
+Time : 6.31179690361
+Testing Using 90% of The Data
+134 correct out of 150 (89.3%).
+Training Using 100% of The Data
+Time : 6.77625918388
+Testing Using 100% of The Data
+134 correct out of 150 (89.3%).

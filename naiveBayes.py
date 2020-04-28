@@ -24,7 +24,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         self.probXWhiteGivenY = util.Counter()
         self.legalLabels = legalLabels
         self.type = "naivebayes"
-        self.k = 10  # this is the smoothing parameter, ** use it in your train method **
+        self.k = 0.001  # this is the smoothing parameter, ** use it in your train method **
         self.automaticTuning = False  # Look at this flag to decide whether to choose k automatically ** use this in your train method **
 
     def setSmoothing(self, k):
@@ -95,6 +95,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         for label in self.legalLabels:
             for feature in self.features:
                 black_feature_label[(feature, label)] += self.k
+                white_feature_label[(feature, label)] += self.k
 
         # conditional probability p(x|y=true), p(x|y=false) x= count for a feature when it's a black pixels
         for feature_label, count in black_feature_label.items():

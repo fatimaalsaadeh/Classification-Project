@@ -1,3 +1,4 @@
+from __future__ import print_function
 # dataClassifier.py
 # -----------------
 # Licensing Information: Please do not distribute or publish solutions to this
@@ -9,6 +10,8 @@
 # This file contains feature extraction methods and harness
 # code for data classification
 import random
+import time
+
 import numpy
 import mostFrequent
 import naiveBayes
@@ -280,6 +283,7 @@ USAGE_STRING = """
 # Main harness code
 
 def runClassifier(args, options):
+    sample = open('printResults.txt', 'w')
     featureFunction = args['featureFunction']
     classifier = args['classifier']
     printImage = args['printImage']
@@ -309,45 +313,49 @@ def runClassifier(args, options):
     trainingData = map(featureFunction, rawTrainingData)
     validationData = map(featureFunction, rawValidationData)
     testData = map(featureFunction, rawTestData)
-    for percent in range(1, 5):
+    for percent in range(1, 11):
         randomIndices = random.sample(range(numTraining), int((percent * .1) * numTraining))
         randomTrainingData = numpy.take(trainingData, randomIndices)
         randomTrainingLabels = numpy.take(trainingLabels, randomIndices)
 
         # Conduct training and testing
         if not (options.autotune and options.classifier == "naiveBayes"):
-            print("Training Using " + str(percent*10) + "% of The Data")
+            start = time.time()
+            print("Training Using " + str(percent*10) + "% of The Data", file = sample)
             classifier.train(randomTrainingData, randomTrainingLabels, validationData, validationLabels)
-            print("Validating Using " + str(percent*10) + "% of The Data")
+            end = time.time()
+            reqtime = end - start
+            print("Time : " + str(reqtime), file = sample)
+            print("Validating Using " + str(percent*10) + "% of The Data", file = sample)
             guesses = classifier.classify(validationData)
             correct = [guesses[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
-            print(str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels)))
+            print(str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels)), file = sample)
         elif options.autotune:
             kgrid = [0.001, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 20, 50]
             bestK = 0
             bestCorrect = 0
             for k in kgrid:
                 classifier.k = k
-                print("Training Using " + str(percent*10) + "% of The Data k =" + str(k))
+                print("Training Using " + str(percent*10) + "% of The Data k =" + str(k), file = sample)
                 classifier.train(randomTrainingData, randomTrainingLabels, validationData, validationLabels)
-                print("Validating Using " + str(percent*10) + "% of The Data k =" + str(k))
+                print("Validating Using " + str(percent*10) + "% of The Data k =" + str(k), file = sample)
                 guesses = classifier.classify(validationData)
                 correct = [guesses[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
                 if correct > bestCorrect:
                     bestCorrect = correct
                     bestK = k
-                print(str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels)))
+                print(str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels)), file = sample)
             classifier.k = bestK
-            print("Training Using " + str(percent*10) +"% of The Data Best K: " + str(bestK))
+            print("Training Using " + str(percent*10) +"% of The Data Best K: " + str(bestK), file = sample)
             classifier.train(randomTrainingData, randomTrainingLabels, validationData, validationLabels)
-            print("Validating Using " + str(percent*10) +"% of The Data Best K: " + str(bestK))
+            print("Validating Using " + str(percent*10) +"% of The Data Best K: " + str(bestK), file = sample)
             guesses = classifier.classify(validationData)
             correct = [guesses[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
-            print(str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels)))
-        print("Testing Using " + str(percent*10) + "% of The Data")
+            print(str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels)), file = sample)
+        print("Testing Using " + str(percent*10) + "% of The Data", file = sample)
         guesses = classifier.classify(testData)
         correct = [guesses[i] == testLabels[i] for i in range(len(testLabels))].count(True)
-        print(str(correct), ("correct out of " + str(len(testLabels)) + " (%.1f%%).") % (100.0 * correct / len(testLabels)))
+        print(str(correct), ("correct out of " + str(len(testLabels)) + " (%.1f%%).") % (100.0 * correct / len(testLabels)), file = sample)
         analysis(classifier, guesses, testLabels, testData, rawTestData, printImage)
 
         # do odds ratio computation if specified at command line
@@ -365,7 +373,7 @@ def runClassifier(args, options):
         if ((options.weights) & (options.classifier == "perceptron")):
             for l in classifier.legalLabels:
                 features_weights = classifier.findHighWeightFeatures(l)
-                print("=== Features with high weight for label %d ===" % l)
+                print("=== Features with high weight for label %d ===" % l, file = sample)
                 printImage(features_weights)
 
 
