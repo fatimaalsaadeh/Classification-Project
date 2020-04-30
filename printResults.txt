@@ -1,0 +1,9 @@
+Training Using 10% of The Data
+Time : 3.46820001602
+Validating Using 10% of The Data aka 45 images
+120 correct out of 150 (82.0%).
+Testing Using 10% of The Data
+116 correct out of 150 (82.0%).
+standard deviation of 4.35889894354 
+
+
